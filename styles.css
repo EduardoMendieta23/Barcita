@@ -1,0 +1,179 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: hsl(200, 30%, 95%); /* Fondo claro */
+  color: #111; /* Texto principal negro suave */
+  line-height: 1.6;
+}
+
+/* ====== Encabezados ====== */
+h1 {
+  color: hsl(203, 100%, 20%);
+  border-bottom: 4px solid currentColor; /* usa el mismo color del texto */
+  padding-bottom: 4px;
+}
+
+h2 { color: hsl(197, 100%, 25%); }
+
+/* ====== Texto general ====== */
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  color: hsl(210, 10%, 20%); /* gris oscuro, no puro negro */
+}
+
+li { color: hsl(203, 100%, 15%); }
+
+th { color: hsl(197, 100%, 25%); }
+
+td { color: hsl(203, 100%, 15%); }
+
+/* ====== Enlaces ====== */
+a {
+  color: hsl(203, 100%, 20%);
+  border-bottom: 2px solid currentColor; /* borde del mismo color que el texto */
+  text-decoration: none;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+a:hover { color: hsl(197, 100%, 35%); }
+
+/* ====== Imagen ====== */
+/* Sugerencia opcional para que la imagen de la card no se deforme */
+.object-fit-cover { object-fit: cover; }
+
+/* ====== Componentes visuales (tarjetas, secciones, alertas, etc.) ====== */
+.card, .alert, .modal-content, section, footer {
+  background-color: #fff; /* Fondo blanco legible */
+  color: #111;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.navbar, header {
+  background-color: #f8f9fa;
+  color: #111;
+}
+
+/* Carrusel */
+.carousel-caption h5, .carousel-caption p {
+  color: #fff; /* Contraste sobre imágenes */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+/* ====== Tablas ====== */
+table {
+  background-color: #fff;
+  border-collapse: collapse;
+}
+
+thead th {
+  background-color: hsl(203, 100%, 15%); /* Azul oscuro */
+  color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: hsl(200, 25%, 92%); /* Gris muy claro alterno */
+}
+
+tfoot tr {
+  background-color: hsl(197, 40%, 85%);
+  font-weight: bold;
+}
+
+/* ====== Formularios ====== */
+form label {
+  color: hsl(203, 100%, 20%);
+  font-weight: 600;
+}
+
+input, textarea, select {
+  background-color: #fff;
+  color: #111;
+  border: 1px solid hsl(203, 30%, 75%);
+  border-radius: 4px;
+  padding: 6px 8px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: hsl(203, 100%, 40%);
+  box-shadow: 0 0 4px hsl(203, 100%, 75%);
+  outline: none;
+}
+
+/* ====== Botón flotante WhatsApp ======
+   Chicos: position: fixed lo “pega” a la ventana, no al contenido. */
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 20px;     /* Distancia desde abajo */
+  right: 20px;      /* Distancia desde la derecha */
+  background-color: #25d366; /* Verde WhatsApp */
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;  /* Tamaño del ícono */
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.25);
+  z-index: 1055;    /* Más alto que navbar/carrusel */
+  text-decoration: none;
+  transition: transform .2s ease, background-color .2s ease, opacity .2s ease;
+
+  /* Chicos: por defecto lo ocultamos; se muestra al hacer scroll */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+/* Estado visible al hacer scroll */
+.whatsapp-float.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Hover/focus: efecto de ampliación */
+.whatsapp-float:hover,
+.whatsapp-float:focus {
+  background-color: #20b954;
+  transform: scale(1.08);
+  outline: none;
+}
+
+/* ====== Footer ======
+   Fondo claro con texto oscuro para buena legibilidad */
+footer {
+  background-color: #f1f3f4;
+  color: #111;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-top: 3px solid hsl(203, 100%, 20%);
+}
+
+footer a {
+  color: hsl(203, 100%, 20%);
+  border: none;
+  margin: 0 8px;
+}
+
+footer a:hover {
+  color: hsl(197, 100%, 35%);
+}
+
+/* ====== Responsive: evitar que el botón tape el footer ====== */
+@media (max-width: 575.98px) {
+  footer { padding-bottom: 84px; } /* 60px botón + 24px aire */
+}
+
+/* ====== Accesibilidad: menos movimiento si el usuario lo prefiere ====== */
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-float { transition: none; }
+}
