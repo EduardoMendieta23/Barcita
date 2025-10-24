@@ -155,13 +155,25 @@
               <h2 class="card-title h4 mb-2">Local 2025/26</h2>
               <p class="card-text mb-1">UCL Camiseta hombre primera equipación 25/26 FC Barcelona (Pedri)</p>
               <p class="card-text fs-5 fw-semibold text-success">Precio: $2,099.00</p>
-              <a href="https://store.fcbarcelona.com/es-mx/collections/home-kit" 
-                 target="_blank" 
-                 class="btn btn-primary btn-sm" rel="noopener">Comprar ahora</a>
-              <!-- Botón que abre modal de detalles -->
-              <button class="btn btn-outline-primary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#modalDetalles">
-                Ver detalles
-              </button>
+             <a href="https://store.fcbarcelona.com/es-mx/collections/home-kit" 
+   target="_blank" 
+   class="btn btn-primary btn-sm" rel="noopener">Comprar ahora</a>
+
+<!-- Ver detalles (modal) -->
+<button class="btn btn-outline-primary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#modalDetalles">
+  Ver detalles
+</button>
+
+<!-- Agregar al carrito local -->
+<button 
+  class="btn btn-success btn-sm ms-2 add-to-cart"
+  data-id="camiseta-2526"
+  data-nombre='Playera Oficial 2025/26 "Pedri"'
+  data-precio="2099"
+>
+  <i class="fa-solid fa-cart-plus me-1"></i>
+  Agregar
+</button>
             </div>
           </div>
         </div>
@@ -214,19 +226,72 @@
         <h3 class="h5 mb-3">Tabla de productos:</h3>
         <div class="table-responsive">
           <table class="table table-striped table-hover align-middle shadow-sm">
-            <thead class="table-dark">
-              <tr>
-                <th>Productos</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
+           <thead class="table-dark">
+          <tr>
+          <th>Productos</th>
+          <th>Precio</th>
+        <th>Cantidad</th>
+        <th></th>
+        </tr>
+          </thead>
             <tbody>
-              <tr><td>Playera Oficial 2025/26</td><td>$2,099</td><td>10</td></tr>
-              <tr><td>Balón Barça Cruyff</td><td>$795</td><td>5</td></tr>
-              <tr><td>Bufanda Lewandowski Telar Barça</td><td>$530</td><td>12</td></tr>
-              <tr><td>Sombrero Nike 2da equipación Barça x Kobe Bryant 25/26</td><td>$930</td><td>8</td></tr>
-            </tbody>
+  <tr>
+    <td>Playera Oficial 2025/26</td>
+    <td>$2,099</td>
+    <td>10</td>
+    <td>
+      <button 
+        class="btn btn-sm btn-success add-to-cart"
+        data-id="camiseta-2526"
+        data-nombre="Playera Oficial 2025/26"
+        data-precio="2099">
+        <i class="fa-solid fa-cart-plus"></i>
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td>Balón Barça Cruyff</td>
+    <td>$795</td>
+    <td>5</td>
+    <td>
+      <button 
+        class="btn btn-sm btn-success add-to-cart"
+        data-id="balon-cruyff"
+        data-nombre="Balón Barça Cruyff"
+        data-precio="795">
+        <i class="fa-solid fa-cart-plus"></i>
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td>Bufanda Lewandowski Telar Barça</td>
+    <td>$530</td>
+    <td>12</td>
+    <td>
+      <button 
+        class="btn btn-sm btn-success add-to-cart"
+        data-id="bufanda-lewa"
+        data-nombre="Bufanda Lewandowski Telar Barça"
+        data-precio="530">
+        <i class="fa-solid fa-cart-plus"></i>
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td>Sombrero Nike 2da equipación Barça x Kobe Bryant 25/26</td>
+    <td>$930</td>
+    <td>8</td>
+    <td>
+      <button 
+        class="btn btn-sm btn-success add-to-cart"
+        data-id="sombrero-kobe"
+        data-nombre="Sombrero Barça x Kobe Bryant 25/26"
+        data-precio="930">
+        <i class="fa-solid fa-cart-plus"></i>
+      </button>
+    </td>
+  </tr>
+</tbody>
             <tfoot class="fw-bold">
               <tr><td colspan="2">Total de productos</td><td>35</td></tr>
             </tfoot>
@@ -445,7 +510,40 @@
   </div>
 </main>
 <!--/Contenido principal-->
+<!-- ================== OFFCANVAS CARRITO ================== -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title d-flex align-items-center" id="offcanvasCartLabel">
+      <i class="fa-solid fa-cart-shopping me-2"></i> Tu carrito
+    </h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
 
+  <div class="offcanvas-body d-flex flex-column">
+    <!-- Lista de productos en carrito -->
+    <ul id="cartItems" class="list-group mb-3 small">
+      <!-- JS inyecta aquí <li> -->
+    </ul>
+
+    <!-- Total -->
+    <div class="d-flex justify-content-between align-items-center border-top pt-3 mb-3">
+      <strong>Total:</strong>
+      <span id="cartTotal" class="fs-5 fw-bold">$0</span>
+    </div>
+
+    <!-- Botones acción -->
+    <div class="d-grid gap-2">
+      <button class="btn btn-success btn-sm" id="btnCheckout" disabled>Proceder al pago</button>
+      <button class="btn btn-outline-danger btn-sm" id="btnVaciar" disabled>Vaciar carrito</button>
+    </div>
+
+    <!-- Nota -->
+    <p class="text-muted mt-3 mb-0" style="font-size:.8rem;">
+      *Esto es una maqueta, no es compra real.
+    </p>
+  </div>
+</div>
+<!-- =============== /OFFCANVAS CARRITO ================= -->
 <!-- ================== MODALES ================== -->
 <!-- Modal Aviso -->
 <div class="modal fade" id="modalAviso" tabindex="-1" aria-labelledby="modalAvisoLabel" aria-hidden="true">
@@ -598,7 +696,7 @@
 <!-- ========================= FOOTER =========================
      Chicos: redes con íconos de Font Awesome. Reemplacen 'tuusuario' por su user real. -->
 <footer class="bg-dark text-center text-white py-3 mt-5">
-  © 2025 Pedri Store | Síguenos para que el barca gané la 6ta
+  © 2025 Pedri Store | Síguenos para que el barca gané la 6ta | Sitio web NO oficial con fines academicos
   <div class="mt-2">
     <!-- Facebook -->
     <a href="https://www.facebook.com/jesustorres" target="_blank" rel="noopener"
@@ -634,6 +732,37 @@
         crossorigin="anonymous"></script>
         <!--Enlace JS-->
         <script src="app.js"></script>
+<!-- Carrito -->
+<!-- BOTÓN FLOTANTE DEL CARRITO -->
+<a href="#"
+   id="cartFloatBtn"
+   class="btn btn-primary rounded-circle shadow position-fixed d-flex align-items-center justify-content-center"
+   data-bs-toggle="offcanvas"
+   data-bs-target="#offcanvasCart"
+   aria-controls="offcanvasCart"
+   aria-label="Abrir carrito">
+  <i class="fa-solid fa-cart-shopping fs-4"></i>
+  <span id="cartBadge"
+        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+        style="font-size:.7rem; min-width:1.4rem;">0</span>
+</a>
+<button 
+  class="btn position-relative me-2" 
+  id="btnCart"
+  type="button"
+  data-bs-toggle="offcanvas"
+  data-bs-target="#offcanvasCart"
+  aria-controls="offcanvasCart"
+  aria-label="Abrir carrito">
+  <i class="fa-solid fa-cart-shopping text-white fs-5"></i>
 
+  <!-- badge del carrito -->
+  <span 
+    id="cartBadge"
+    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+    style="font-size:0.7rem; min-width:1.4rem;">
+    0
+  </span>
+</button>
 </body>
 </html>

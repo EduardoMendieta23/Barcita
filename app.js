@@ -1,3 +1,177 @@
+// ======================================================
+// 🛒 CARRITO DE COMPRAS
+// - Maneja items (id, nombre, precio, qty)
+// - Renderiza offcanvas
+// - Actualiza badge
+// ======================================================
+
+const cart = []; // [{id, nombre, precio, qty}]
+
+/** Busca producto por id en el carrito */
+function findCartItem(id) {
+  return cart.find(item => item.id === id);
+}
+
+/** Recalcular total del carrito */
+function calcCartTotal() {
+  let total = 0;
+  for (const item of cart) {
+    total += item.precio * item.qty;
+  }
+  return total;
+}
+
+/** Pinta el numerito rojo en el ícono del carrito */
+function updateCartBadge() {
+  const badge = document.getElementById('cartBadge');
+  if (!badge) return;
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  badge.textContent = totalQty;
+}
+
+/** Render lista del carrito dentro del offcanvas */
+function renderCart() {
+  const list = document.getElementById('cartItems');
+  const totalEl = document.getElementById('cartTotal');
+  const btnCheckout = document.getElementById('btnCheckout');
+  const btnVaciar = document.getElementById('btnVaciar');
+
+  if (!list || !totalEl) return;
+
+  // si está vacío
+  if (cart.length === 0) {
+    list.innerHTML = `
+      <li class="list-group-item text-center text-muted py-4">
+        Tu carrito está vacío 😢
+      </li>`;
+    totalEl.textContent = '$0';
+    btnCheckout.disabled = true;
+    btnVaciar.disabled = true;
+    updateCartBadge();
+    return;
+  }
+
+  // si tiene elementos
+  list.innerHTML = '';
+  cart.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'list-group-item d-flex justify-content-between align-items-start';
+
+    li.innerHTML = `
+      <div class="me-2">
+        <div class="fw-semibold">${item.nombre}</div>
+        <div class="text-muted" style="font-size:.8rem;">
+          ${toMXN(item.precio)} c/u
+        </div>
+        <div class="text-muted" style="font-size:.8rem;">
+          Cantidad: 
+          <button class="btn btn-sm btn-outline-secondary px-2 py-0 btnQtyDown" data-id="${item.id}">-</button>
+          <span class="mx-1">${item.qty}</span>
+          <button class="btn btn-sm btn-outline-secondary px-2 py-0 btnQtyUp" data-id="${item.id}">+</button>
+        </div>
+      </div>
+      <div class="text-end">
+        <div class="fw-bold">${toMXN(item.precio * item.qty)}</div>
+        <button class="btn btn-link p-0 text-danger remove-item" data-id="${item.id}">
+          Quitar
+        </button>
+      </div>
+    `;
+    list.appendChild(li);
+  });
+
+  totalEl.textContent = toMXN(calcCartTotal());
+  btnCheckout.disabled = false;
+  btnVaciar.disabled = false;
+
+  updateCartBadge();
+}
+
+/** Agregar un producto al carrito */
+function addToCart({id, nombre, precio}) {
+  const existing = findCartItem(id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      id,
+      nombre,
+      precio,
+      qty: 1
+    });
+  }
+  renderCart();
+}
+
+/** Cambiar cantidad */
+function changeQty(id, delta) {
+  const item = findCartItem(id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    // eliminar
+    const idx = cart.findIndex(p => p.id === id);
+    if (idx >= 0) cart.splice(idx, 1);
+  }
+  renderCart();
+}
+
+/** Vaciar carrito */
+function clearCart() {
+  cart.splice(0, cart.length);
+  renderCart();
+}
+
+/** Listener global DOMContentLoaded para carrito */
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Escuchar TODOS los botones .add-to-cart
+  document.body.addEventListener('click', (e) => {
+    const btn = e.target.closest('.add-to-cart');
+    if (btn) {
+      const id = btn.dataset.id;
+      const nombre = btn.dataset.nombre;
+      const precio = Number(btn.dataset.precio);
+      if (!id || !nombre || !precio) {
+        console.warn('Falta data-* en botón .add-to-cart');
+        return;
+      }
+      addToCart({id, nombre, precio});
+    }
+  });
+
+  // 2. Escuchar botones dinámicos dentro del carrito:
+  const cartList = document.getElementById('cartItems');
+  cartList.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.remove-item');
+    const upBtn     = e.target.closest('.btnQtyUp');
+    const downBtn   = e.target.closest('.btnQtyDown');
+
+    if (removeBtn) {
+      changeQty(removeBtn.dataset.id, -9999); // fuerza eliminar
+    }
+    if (upBtn) {
+      changeQty(upBtn.dataset.id, +1);
+    }
+    if (downBtn) {
+      changeQty(downBtn.dataset.id, -1);
+    }
+  });
+
+  // 3. Vaciar carrito
+  const btnVaciar = document.getElementById('btnVaciar');
+  btnVaciar.addEventListener('click', clearCart);
+
+  // 4. Checkout fake
+  const btnCheckout = document.getElementById('btnCheckout');
+  btnCheckout.addEventListener('click', () => {
+    alert('Gracias por tu compra 💙❤️ (demo).');
+    clearCart();
+  });
+
+  // 5. Render inicial
+  renderCart();
+});
+
 (() => {
   const body = document.body;
 
@@ -253,8 +427,8 @@ document.addEventListener('DOMContentLoaded', () => {
     waBtn.setAttribute('aria-label', `Chatea por WhatsApp — ${msg}`);
 
     // (Opcional) Prefill del texto en el chat
-    const telefono = '527221234567'; // 52 + 10 dígitos (México)
-    const texto = encodeURIComponent('Hola, vengo del sitio de Profe Joako. Me interesa una playera.');
+    const telefono = '527'; // 52 + 10 dígitos (México)
+    const texto = encodeURIComponent('Hola, vengo del sitio Pedri Store. Me interesa una playera.');
     waBtn.href = `https://wa.me/${telefono}?text=${texto}`;
 
     // 2) Mostrar/ocultar por scroll (aparece al bajar 300px)

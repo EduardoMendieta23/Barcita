@@ -177,3 +177,46 @@ footer a:hover {
 @media (prefers-reduced-motion: reduce) {
   .whatsapp-float { transition: none; }
 }
+/* ========= Carrito ========= */
+#btnCart {
+  background: transparent;
+  border: 0;
+  line-height: 1;
+  padding: .3rem .5rem;
+}
+
+#btnCart .fa-cart-shopping {
+  transition: transform .15s ease;
+}
+
+#btnCart:hover .fa-cart-shopping {
+  transform: scale(1.1);
+}
+
+#cartItems li .remove-item {
+  cursor: pointer;
+  font-size: .8rem;
+}
+/* ===== BOTÓN FLOTANTE DEL CARRITO ===== */
+#cartFloatBtn {
+  width: 3.3rem;
+  height: 3.3rem;
+  bottom: 90px;           /* encima del WhatsApp */
+  right: 25px;
+  z-index: 1080;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#cartFloatBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+#cartFloatBtn i {
+  color: white;
+}
+
+#cartFloatBtn #cartBadge {
+  font-size: 0.7rem;
+  min-width: 1.4rem;
+}
